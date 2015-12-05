@@ -1,10 +1,10 @@
 <?php
 //uncomment this if you don't handle ORIGIN in configuration file
-	header("Access-Control-Allow-Origin: *");
-    	header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
-	
-    require_once('./globals.php'); 
-		
+   header("Access-Control-Allow-Origin: *");
+       header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
+
+    require_once('./globals.php');
+
     // Connection to DB
     try
     {
@@ -16,28 +16,28 @@
         echo 'ERROR: ' . $e -> getMessage();
         exit();
     }
-    
+
     try
     {
-		// dessert have different ingredient story..
-		$statement = $db -> query("SELECT foodId, foodName FROM luisella.food WHERE category <> 'dessert' ORDER BY category DESC");
+      // dessert have different ingredient story..
+      $statement = $db -> query("SELECT foodId, foodName FROM `food` WHERE category <> 'dessert' ORDER BY category DESC");
         $json = array();
         $i = 0;
         while($row = $statement -> fetch())
         {
             $json[$i] = array(
                 'foodId' => $row['foodId'],
-				'foodName' => $row['foodName']
+            'foodName' => $row['foodName']
             );
             $i++;
         }
-		if($i == 0)
-			echo "No categories.";
-		else
-		{
-			$jsonstring = json_encode($json);
-			echo $jsonstring;
-		}
+      if($i == 0)
+         echo "No categories.";
+      else
+      {
+         $jsonstring = json_encode($json);
+         echo $jsonstring;
+      }
     } catch (PDOException $e) {
         echo "Exception: " . $e -> getMessage();
     }

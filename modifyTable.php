@@ -1,7 +1,7 @@
 <?php
 //uncomment this if you don't handle ORIGIN in configuration file
-	header("Access-Control-Allow-Origin: *");
-    	header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
+   header("Access-Control-Allow-Origin: *");
+       header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
     require_once('globals.php');
      // Connection to DB
     try
@@ -18,7 +18,7 @@
     try
     {
         //have to find the table with passed id and then update its information.
-		$statement = $db -> prepare("UPDATE `table` SET `tableName` = :tableName, `tableNumber` = :tableNumber, `customers` = :customers WHERE `tableId` = :tableId");
+      $statement = $db -> prepare("UPDATE `table` SET `tableName` = :tableName, `tableNumber` = :tableNumber, `customers` = :customers WHERE `tableId` = :tableId");
         $statement -> execute(array(':tableId' => $_POST['tableId'],
                                     ':tableName' => $_POST['tableName'],
                                     ':tableNumber' => $_POST['tableNumber'],

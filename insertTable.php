@@ -1,7 +1,7 @@
 <?php
 //uncomment this if you don't handle ORIGIN in configuration file
-	header("Access-Control-Allow-Origin: *");
-    	header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
+   header("Access-Control-Allow-Origin: *");
+       header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
     require_once('./globals.php');  
     // Connection to DB
     try
@@ -17,7 +17,7 @@
     {
         //Check POSTED parameters
         
-        $statement = $db -> prepare("INSERT INTO `luisella`.`table` (`tableNumber`, `customers`, `tableName`) VALUES (:tableNumber, :customers, :tableName)");
+        $statement = $db -> prepare("INSERT INTO `table` (`tableNumber`, `customers`, `tableName`) VALUES (:tableNumber, :customers, :tableName)");
         $statement -> execute(array(':tableNumber' => $_POST['tableNumber'], ':customers' => $_POST['customers'], ':tableName' => $_POST['tableName']));
         //If an exception isn't thrown then it's time to echo something!
         echo "Good";

@@ -1,7 +1,7 @@
 <?php
 //uncomment this if you don't handle ORIGIN in configuration file
-	header("Access-Control-Allow-Origin: *");
-    	header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
+   header("Access-Control-Allow-Origin: *");
+       header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
 
     require_once('./globals.php');
 
@@ -20,10 +20,10 @@
     //Select table and then retrieve a JSON object
     try
     {
-		$statement = $db -> query("SELECT * FROM luisella.table");
-		$statement2 = $db -> prepare("SELECT orderId FROM luisella.order WHERE tableId = :tableId AND :tableId IN (SELECT DISTINCT tableId FROM `food&order`, `order` WHERE (status = 1 OR status = 2) AND `food&order`.orderId = order.orderId) ORDER BY orderedTime ASC");
+      $statement = $db -> query("SELECT * FROM `table`");
+      $statement2 = $db -> prepare("SELECT orderId FROM `order` WHERE tableId = :tableId AND :tableId IN (SELECT DISTINCT tableId FROM `food&order`, `order` WHERE (status = 1 OR status = 2) AND `food&order`.orderId = order.orderId) ORDER BY orderedTime ASC");
         $statement3 = $db -> prepare("SELECT food.foodId, quantity, foodName, extraInfo, status FROM `food&order`, `food` WHERE food.foodId=`food&order`.foodId AND `orderId` = :orderId AND (status = 1 OR status = 2)");
-		$json = array();
+      $json = array();
         $i = 0;
         while($row = $statement -> fetch())
         {
@@ -32,34 +32,34 @@
                 'tableNumber' => $row['tableNumber'],
                 'tableId' => $row['tableId'],
                 'customers' => $row['customers'],
-				'order' => array()
+            'order' => array()
             );
-			$statement2 -> execute(array(":tableId" => $row['tableId']));
-			$j = 0;
-			while($row2 = $statement2 -> fetch())
-			{
-				$json[$i]["order"][$j] = array(
-					'orderId' => $row2['orderId'],
-					'foodIds' => array(),
-					'quantities' => array(),
-					'foodNames' => array(),
-					'extraInfos' => array(),
+         $statement2 -> execute(array(":tableId" => $row['tableId']));
+         $j = 0;
+         while($row2 = $statement2 -> fetch())
+         {
+            $json[$i]["order"][$j] = array(
+               'orderId' => $row2['orderId'],
+               'foodIds' => array(),
+               'quantities' => array(),
+               'foodNames' => array(),
+               'extraInfos' => array(),
                'status' => array()
-				);
-				$statement3 -> execute(array(":orderId" => $row2['orderId']));
-				while($row3 = $statement3 -> fetch())
-				{
-					$json[$i]["order"][$j]["foodIds"][] = $row3["foodId"];
-					$json[$i]["order"][$j]["quantities"][] = $row3["quantity"];
-					$json[$i]["order"][$j]["foodNames"][] = $row3["foodName"];
-					$json[$i]["order"][$j]["extraInfos"][] = $row3["extraInfo"];
+            );
+            $statement3 -> execute(array(":orderId" => $row2['orderId']));
+            while($row3 = $statement3 -> fetch())
+            {
+               $json[$i]["order"][$j]["foodIds"][] = $row3["foodId"];
+               $json[$i]["order"][$j]["quantities"][] = $row3["quantity"];
+               $json[$i]["order"][$j]["foodNames"][] = $row3["foodName"];
+               $json[$i]["order"][$j]["extraInfos"][] = $row3["extraInfo"];
                $json[$i]["order"][$j]["status"][] = $row3["status"];
-				}
-				$j++;
-			}
+            }
+            $j++;
+         }
             $i++;
         }
-		if($i == 0)
+      if($i == 0)
             echo 0;
         $jsonstring = json_encode($json);
         echo $jsonstring;

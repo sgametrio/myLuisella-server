@@ -1,7 +1,7 @@
 <?php
 //uncomment this if you don't handle ORIGIN in configuration file
-	header("Access-Control-Allow-Origin: *");
-    	header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
+   header("Access-Control-Allow-Origin: *");
+       header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
     require_once('./globals.php');  
     // Connection to DB
     try
@@ -15,13 +15,13 @@
 
     try
     {
-		if(!isset($_POST['foodIds']))
-			throw new PDOException("Missing parameter.");
+      if(!isset($_POST['foodIds']))
+         throw new PDOException("Missing parameter.");
         //Prepare INSERT query
-		$statement = $db -> prepare("UPDATE `luisella`.`food` SET `todayMenu` = :todayMenu WHERE `foodId` = :foodId");
-		$foodObject = json_decode($_POST['foodIds']);
-		foreach($foodObject as $obj)
-			$statement -> execute(array(':todayMenu' => $obj -> checked, ':foodId' => $obj -> foodId));
+      $statement = $db -> prepare("UPDATE `food` SET `todayMenu` = :todayMenu WHERE `foodId` = :foodId");
+      $foodObject = json_decode($_POST['foodIds']);
+      foreach($foodObject as $obj)
+         $statement -> execute(array(':todayMenu' => $obj -> checked, ':foodId' => $obj -> foodId));
         echo "0";
     } catch (PDOException $e) {
         echo 'Exception: ' . $e -> getMessage();
